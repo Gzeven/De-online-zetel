@@ -1,18 +1,20 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 const CartColumns = () => {
-  return <Wrapper>
-  <div className="content">
-  <h5>Product</h5>
-  <h5>Prijs</h5>
-  <h5>Aantal</h5>
-  <h5>Totaal</h5>
-  <span></span>
-  </div>
-  <hr/>
-  </Wrapper>
-}
+  return (
+    <Wrapper>
+      <div className="content">
+        <h5>Product</h5>
+        <h5>Prijs</h5>
+        <h5>Aantal</h5>
+        <h5>Totaal</h5>
+        <span></span>
+      </div>
+      <hr />
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.div`
   display: none;
@@ -24,7 +26,7 @@ const Wrapper = styled.div`
       justify-items: center;
       column-gap: 1rem;
       h5 {
-        color: var(--clr-blue-1);
+        color: var(--clr-slate-1);
         font-weight: 400;
       }
     }
@@ -38,6 +40,6 @@ const Wrapper = styled.div`
       margin-bottom: 3rem;
     }
   }
-`
+`;
 
-export default CartColumns
+export default CartColumns;

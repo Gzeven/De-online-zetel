@@ -1,21 +1,39 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 const Contact = () => {
-  return <Wrapper>
-  <div className="section-center">
-  <h3> Krijg 20% korting door je te abonneren op onze digitale nieuwsbrief 
-  </h3>
-  <div className="content">
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum laborum, aperiam adipisci quidem omnis neque ad dolore expedita.</p>
-  <form className="contact-form" action="https://formspree.io/f/xrgonyky" method="post" >
-  <input type="email" className="form-input" placeholder="Vul een geldig e-mailadres in." name="_replyto"/>
-  <button type="submit" className="submit-btn">Abonneren</button>
-  </form>
-  </div>
-  </div>
-  </Wrapper>
-}
+  return (
+    <Wrapper>
+      <div className="section-center">
+        <h3>
+          {' '}
+          Krijg 20% korting door je te abonneren op onze digitale nieuwsbrief
+        </h3>
+        <div className="content">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum
+            laborum, aperiam adipisci quidem omnis neque ad dolore expedita.
+          </p>
+          <form
+            className="contact-form"
+            action="https://formspree.io/f/xrgonyky"
+            method="post"
+          >
+            <input
+              type="email"
+              className="form-input"
+              placeholder="Vul een geldig e-mailadres in."
+              name="_replyto"
+            />
+            <button type="submit" className="submit-btn">
+              Abonneren
+            </button>
+          </form>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
 const Wrapper = styled.section`
   padding: 5rem 0;
   h3 {
@@ -24,7 +42,7 @@ const Wrapper = styled.section`
   p {
     line-height: 2;
     max-width: 45em;
-    color: var(--clr-blue-5);
+    color: var(--clr-slate-5);
   }
   .contact-form {
     width: 90vw;
@@ -51,7 +69,6 @@ const Wrapper = styled.section`
   }
   .form-input::placeholder {
     color: var(--clr-black);
-    
   }
   .submit-btn {
     background: var(--clr-primary-5);
@@ -79,6 +96,6 @@ const Wrapper = styled.section`
   @media (min-width: 1280px) {
     padding: 15rem 0;
   }
-`
+`;
 
-export default Contact
+export default Contact;

@@ -1,36 +1,44 @@
-import React from 'react'
-import { FaShoppingCart, FaUserMinus, FaUserPlus } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-import { useProductsContext } from '../context/products_context'
-import { useCartContext } from '../context/cart_context'
-import { useUserContext } from '../context/user_context'
+import React from 'react';
+import { FaShoppingCart, FaUserMinus, FaUserPlus } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { useProductsContext } from '../context/products_context';
+import { useCartContext } from '../context/cart_context';
+import { useUserContext } from '../context/user_context';
 
 const CartButtons = () => {
-  const {closeSideBar} = useProductsContext();
-  const {total_items, clearCart} = useCartContext();
-  const {loginWithRedirect, logout, myUser} = useUserContext()
-  
+  const { closeSideBar } = useProductsContext();
+  const { total_items, clearCart } = useCartContext();
+  const { loginWithRedirect, logout, myUser } = useUserContext();
+
   return (
     <Wrapper className="cart-btn-wrapper">
-        <Link to="/winkelwagen" className="cart-btn" onClick={closeSideBar}>
-           Winkelwagen<span className="cart-container">
-          <FaShoppingCart/>
-  <span className="cart-value">{total_items}</span>
-  </span>
-  </Link>
-  {myUser ? <button type="button" className="auth-btn" onClick={()=>{
-     clearCart()
-     logout({returnTo: window.location.origin})
-  }
-   }>Uitloggen <FaUserMinus/></button> :   <button type="button" className="auth-btn" onClick={loginWithRedirect}>
-  Inloggen <FaUserPlus/>
-  </button> }
-
-  
-  </Wrapper>
-  )
-}
+      <Link to="/winkelwagen" className="cart-btn" onClick={closeSideBar}>
+        Winkelwagen
+        <span className="cart-container">
+          <FaShoppingCart />
+          <span className="cart-value">{total_items}</span>
+        </span>
+      </Link>
+      {myUser ? (
+        <button
+          type="button"
+          className="auth-btn"
+          onClick={() => {
+            clearCart();
+            logout({ returnTo: window.location.origin });
+          }}
+        >
+          Uitloggen <FaUserMinus />
+        </button>
+      ) : (
+        <button type="button" className="auth-btn" onClick={loginWithRedirect}>
+          Inloggen <FaUserPlus />
+        </button>
+      )}
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.div`
   display: grid;
@@ -42,10 +50,10 @@ const Wrapper = styled.div`
     color: var(--clr-blue-1);
     font-size: 1rem;
     letter-spacing: var(--spacing);
-    color: var(--clr-blue-1);
+    color: var(--clr-slate-1);
     display: flex;
     align-items: center;
-    margin-right: 1.5rem
+    margin-right: 1.5rem;
   }
   .cart-container {
     display: flex;
@@ -78,13 +86,11 @@ const Wrapper = styled.div`
     border-color: transparent;
     font-size: 1rem;
     cursor: pointer;
-    color: var(--clr-blue-1);
+    color: var(--clr-slate-1);
     letter-spacing: var(--spacing);
     svg {
       margin-left: 5px;
     }
   }
-`
-export default CartButtons
-
-
+`;
+export default CartButtons;

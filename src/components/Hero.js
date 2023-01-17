@@ -1,23 +1,41 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import heroBcg from '../assets/hero-bcg.jpeg'
-import heroBcg2 from '../assets/hero-bcg-2.jpeg'
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import heroBcg from '../assets/hero-bcg.jpg';
+import heroBcg2 from '../assets/hero-bcg-2.jpg';
 
 const Hero = () => {
-  return <Wrapper className="section-center">
-  <article className="content">
-  <h1>Ontwerp je<br/>
-   eigen plek</h1>
-   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores fuga nostrum sunt dolorem magni error porro cupiditate ea tempore nesciunt.</p>
-   <Link to="producten" className="btn hero-btn">Winkelen</Link>
-  </article>
-  <article className="img-container">
-  <img src={heroBcg} alt="een mooie tafel" className="main-img"/>
-  <img src={heroBcg2} alt="een persoon aan het werk" className="accent-img"/>
-  </article>
-  </Wrapper>
-}
+  return (
+    <Wrapper className="section-center">
+      <article className="content">
+        <h1>
+          Geef je huis
+          <br />
+          je eigen look
+        </h1>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores fuga
+          nostrum sunt dolorem magni error porro cupiditate ea tempore nesciunt.
+        </p>
+        <Link to="producten" className="btn hero-btn">
+          Winkelen
+        </Link>
+      </article>
+      <article className="img-container">
+        <img
+          src={heroBcg}
+          alt="een zitgedeelte in een woonkamer met een keuken op de achtergrond"
+          className="main-img"
+        />
+        <img
+          src={heroBcg2}
+          alt="een slaapkamer met bed en twee hanglampen ernaast"
+          className="accent-img"
+        />
+      </article>
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.section`
   min-height: 60vh;
@@ -31,7 +49,7 @@ const Wrapper = styled.section`
     line-height: 2;
     max-width: 45em;
     margin-bottom: 2rem;
-    color: var(--clr-blue-5);
+    color: var(--clr-slate-5);
     font-size: 1rem;
   }
   @media (min-width: 992px) {
@@ -79,6 +97,6 @@ const Wrapper = styled.section`
       border-radius: var(--radius);
     }
   }
-`
+`;
 
-export default Hero
+export default Hero;

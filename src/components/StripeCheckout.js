@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
-import { loadStripe } from '@stripe/stripe-js'
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { loadStripe } from '@stripe/stripe-js';
 import {
   CardElement,
   useStripe,
   Elements,
   useElements,
-} from '@stripe/react-stripe-js'
-import axios from 'axios'
-import { useCartContext } from '../context/cart_context'
-import { useUserContext } from '../context/user_context'
-import { formatPrice } from '../utils/helpers'
-import { useHistory } from 'react-router-dom'
+} from '@stripe/react-stripe-js';
+import axios from 'axios';
+import { useCartContext } from '../context/cart_context';
+import { useUserContext } from '../context/user_context';
+import { formatPrice } from '../utils/helpers';
+import { useNavigate } from 'react-router-dom';
 
-const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
+const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 const CheckoutForm = () => {
-  const {cart, total_amount, shipping_fee, clearCart } = useCartContext();
-  const {myUser} =useUserContext();
-  const history = useHistory();
+  const { cart, total_amount, shipping_fee, clearCart } = useCartContext();
+  const { myUser } = useUserContext();
+  const navigate = useNavigate();
   //Stripe
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
@@ -44,87 +44,112 @@ const CheckoutForm = () => {
         iconColor: '#fa755a',
       },
     },
-  }
+  };
 
-  const createPaymentIntent = async() => {
-  try {
-    const {data} = await axios.post('/.netlify/functions/create-payment-intent',
-    JSON.stringify({cart, shipping_fee, total_amount}))
-    setClientSecret(data.clientSecret)
-  } catch (error) { 
-  }
-  }
+  const createPaymentIntent = async () => {
+    try {
+      const { data } = await axios.post(
+        '/.netlify/functions/create-payment-intent',
+        JSON.stringify({ cart, shipping_fee, total_amount })
+      );
+      setClientSecret(data.clientSecret);
+    } catch (error) {}
+  };
 
   useEffect(() => {
     createPaymentIntent();
     //eslint-disable-next-line
-  }, [])
+  }, []);
 
-const handleChange = async (event) => {
-setDisabled(event.empty)
-setError(event.error ? event.error.message : '')
-}
+  const handleChange = async (event) => {
+    setDisabled(event.empty);
+    setError(event.error ? event.error.message : '');
+  };
 
-const handleSubmit = async (ev) => {
-  ev.preventDefault()
-  setProcessing(true);
-  const payload = await stripe.confirmCardPayment(clientSecret, {
-    payment_method: {
-      card:elements.getElement(CardElement)
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    setProcessing(true);
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+      },
+    });
+    if (payload.error) {
+      setError(`Betaling mislukt ${payload.error.message}`);
+      setProcessing(false);
+    } else {
+      setError(null);
+      setProcessing(false);
+      setSucceeded(true);
+      setTimeout(() => {
+        clearCart();
+        navigate('/');
+      }, 1000);
     }
-  })
- if(payload.error) {
-   setError(`Betaling mislukt ${payload.error.message}`)
-   setProcessing(false)
- } else {
-   setError(null);
-   setProcessing(false);
-   setSucceeded(true);
-   setTimeout(() => {
-     clearCart();
-    history.push('/')
-   }, 10000);
- }
-}
+  };
 
-  return <div>
-  {
-  succeeded ? <article>
-  <h4>Bedankt voor je bestelling</h4>
-  <h4>De betaling is gelukt!</h4>
-  <h4>Je keert terug naar beginpagina</h4>
-             </article> : 
-  <article> 
-  <h4>Hallo, {myUser && myUser.name}</h4>
-  <p>Het totale bedrag is: {formatPrice(shipping_fee + total_amount)}</p>
-  <p>Test kaart nummer: 4242 4242 4242 4242 </p>
-  </article>
+  return (
+    <div>
+      {succeeded ? (
+        <article>
+          <h4>Bedankt voor je bestelling</h4>
+          <h4>De betaling is gelukt!</h4>
+          <h4>Je keert terug naar beginpagina</h4>
+        </article>
+      ) : (
+        <article>
+          <h4>Hallo, {myUser && myUser.name}</h4>
+          <p>
+            Het totale bedrag is: {formatPrice(shipping_fee + total_amount)}
+          </p>
+          <p>Test kaart nummer: 4242 4242 4242 4242 </p>
+        </article>
+      )}
+      <form id="payment-form" onSubmit={handleSubmit}>
+        <CardElement
+          id="card-element"
+          options={cardStyle}
+          onChange={handleChange}
+        />
+        <button disabled={processing || disabled || succeeded} id="submit">
+          <span id="button-text">
+            {processing ? (
+              <div className="spinner" id="spinner"></div>
+            ) : (
+              'Betalen'
+            )}
+          </span>
+        </button>
+        {/* Laat fout zien bij verwerken betaling */}
+        {error && (
+          <div className="card-error" role="alert">
+            {' '}
+            {error}
+          </div>
+        )}
 
-  }
-  <form id="payment-form" onSubmit={handleSubmit}>
-  <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
-  <button disabled={processing || disabled || succeeded} id="submit" ><span id="button-text">
-  {processing ? <div className="spinner" id="spinner"></div> : "Betalen" }
-  </span></button>
-  {/* Laat fout zien bij verwerken betaling */}
-  {error && <div className="card-error" role="alert"> {error}</div>}
-
-  {/* Laat success bericht zien bij verwerken betaling */}
-  <p className={succeeded ? 'result-message' : 'result-message hidden'}>Betaling succesvol ontvangen, zie resultaat <a href={`https://dashboard.stripe.com/test/payments`}>Stripe dashboard</a>Ververs pagina om opnieuw te betalen</p>
-  </form>
-  </div>
-}
+        {/* Laat success bericht zien bij verwerken betaling */}
+        <p className={succeeded ? 'result-message' : 'result-message hidden'}>
+          Betaling succesvol ontvangen, zie resultaat{' '}
+          <a href={`https://dashboard.stripe.com/test/payments`}>
+            Stripe dashboard
+          </a>
+          Ververs pagina om opnieuw te betalen
+        </p>
+      </form>
+    </div>
+  );
+};
 
 const StripeCheckout = () => {
   return (
     <Wrapper>
-    <Elements stripe={promise}>
+      <Elements stripe={promise}>
         <CheckoutForm />
-    </Elements>
-  
+      </Elements>
     </Wrapper>
-  )
-}
+  );
+};
 
 const Wrapper = styled.section`
   form {
@@ -264,6 +289,6 @@ const Wrapper = styled.section`
       width: 80vw;
     }
   }
-`
+`;
 
-export default StripeCheckout
+export default StripeCheckout;

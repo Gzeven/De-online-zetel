@@ -1,39 +1,51 @@
-import React from 'react'
-import logo from '../assets/winkellogo.svg'
-import { Link } from 'react-router-dom'
-import { useProductsContext } from '../context/products_context'
-import { FaTimes } from 'react-icons/fa'
-import { links } from '../utils/constants'
-import styled from 'styled-components'
-import CartButtons from './CartButtons'
-import { useUserContext } from '../context/user_context'
+import React from 'react';
+import logo from '../assets/winkellogo.svg';
+import { Link } from 'react-router-dom';
+import { useProductsContext } from '../context/products_context';
+import { FaTimes } from 'react-icons/fa';
+import { links } from '../utils/constants';
+import styled from 'styled-components';
+import CartButtons from './CartButtons';
+import { useUserContext } from '../context/user_context';
 
 const Sidebar = () => {
-  const {isSidebarOpen, closeSideBar} = useProductsContext();
-  const {myUser} = useUserContext();
-  
-  return <SidebarContainer>
-  <aside className={`${isSidebarOpen ? "sidebar show-sidebar" : "sidebar"}`}>
-  <div className="sidebar-header">
-  <img src={logo} className="logo" alt="de online winkel"/>
-  <button type="button" className="close-btn" onClick={closeSideBar}><FaTimes/></button>
-  </div>
-  <ul className="links">
-  {links.map(({id,text,url})=> {
-  return <li key={id} >
-  <Link to={url} onClick={closeSideBar}>{text}</Link>
-  </li>
-  })}
-  {myUser && <li >
-  <Link to="/bestellen" onClick={closeSideBar} >Bestellen</Link>
-  </li>}
-  
-  </ul>
-  <CartButtons/>
-  </aside>
-  
-  </SidebarContainer>
-}
+  const { isSidebarOpen, closeSideBar } = useProductsContext();
+  const { myUser } = useUserContext();
+
+  return (
+    <SidebarContainer>
+      <aside
+        className={`${isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}`}
+      >
+        <div className="sidebar-header">
+          <img src={logo} className="logo" alt="de online winkel" />
+          <button type="button" className="close-btn" onClick={closeSideBar}>
+            <FaTimes />
+          </button>
+        </div>
+        <ul className="links">
+          {links.map(({ id, text, url }) => {
+            return (
+              <li key={id}>
+                <Link to={url} onClick={closeSideBar}>
+                  {text}
+                </Link>
+              </li>
+            );
+          })}
+          {myUser && (
+            <li>
+              <Link to="/bestellen" onClick={closeSideBar}>
+                Bestellen
+              </Link>
+            </li>
+          )}
+        </ul>
+        <CartButtons />
+      </aside>
+    </SidebarContainer>
+  );
+};
 
 const SidebarContainer = styled.div`
   text-align: center;
@@ -69,7 +81,7 @@ const SidebarContainer = styled.div`
     font-size: 1rem;
     text-transform: capitalize;
     padding: 1rem 1.5rem;
-    color: var(--clr-grey-3);
+    color: var(--clr-slate-3);
     transition: var(--transition);
     letter-spacing: var(--spacing);
   }
@@ -77,8 +89,8 @@ const SidebarContainer = styled.div`
   .links a:hover {
     padding: 1rem 1.5rem;
     padding-left: 2rem;
-    background: var(--clr-blue-10);
-    color: var(--clr-blue-2);
+    background: var(--clr-slate-10);
+    color: var(--clr-slate-2);
   }
 
   .sidebar {
@@ -104,6 +116,6 @@ const SidebarContainer = styled.div`
       display: none;
     }
   }
-`
+`;
 
-export default Sidebar
+export default Sidebar;
