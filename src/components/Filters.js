@@ -210,13 +210,12 @@ const Wrapper = styled.section`
     border: none;
     box-shadow: 0px 0px 0px 1px black;
     cursor: pointer;
-    opacity: 0.5;
     display: flex;
     align-items: center;
     justify-content: center;
     svg {
       font-size: 0.5rem;
-      color: var(--clr-slate-7);
+      color: var(--clr-slate-5);
     }
   }
   .all-btn {
@@ -228,6 +227,7 @@ const Wrapper = styled.section`
   }
   .active {
     opacity: 1;
+    border: 1px black solid;
   }
   .all-btn .active {
     text-decoration: underline;

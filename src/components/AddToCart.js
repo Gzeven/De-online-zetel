@@ -97,17 +97,16 @@ const Wrapper = styled.section`
     margin-right: 0.5rem;
     border: none;
     cursor: pointer;
-    opacity: 0.5;
     display: flex;
     align-items: center;
     justify-content: center;
     svg {
       font-size: 0.75rem;
-      color: var(--clr-slate-7);
+      color: var(--clr-slate-5);
     }
   }
   .active {
-    opacity: 1;
+    border: 1px solid black;
     outline: none;
   }
   .btn-container {
